@@ -1,0 +1,27 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>精力管理条</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
+</head>
+<body>
+    <h1>精力管理条</h1>
+    <div class="time-bar" id="timeBar"></div>
+    
+    <!-- 编辑弹窗 -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="editor">
+                <textarea id="markdownInput" placeholder="输入Markdown笔记..."></textarea>
+                <div id="preview"></div>
+            </div>
+            <button onclick="saveNote()">保存</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
