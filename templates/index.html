@@ -3,11 +3,13 @@
 <html>
 <head>
     <title>神秘的条</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
 </head>
 <body>
-    <h1>神秘的条</h1>
+    <h1><i class="fas fa-timeline"></i> 神秘的条</h1>
     <div class="time-bar-container">
         <div class="time-bar" id="timeBar">
             <div class="time-ticks"></div>

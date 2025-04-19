@@ -168,3 +168,15 @@ textarea {
     font-size: 0.9em;
     margin-top: 5px;
 }
+
+h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #333;
+}
+
+h1 i {
+    color: #2196F3;
+    font-size: 1.2em;
+}
