@@ -35,6 +35,13 @@ function createDivider(position, content) {
     divider.style.left = `${position}%`;
     divider.dataset.content = content;
     
+    // 根据内容设置颜色
+    if (content && content.trim() !== '新事项' && content.trim() !== '') {
+        divider.style.setProperty('--divider-color', '#2196F3'); // 蓝色
+    } else {
+        divider.style.setProperty('--divider-color', '#ff4444'); // 红色
+    }
+    
     // 添加拖动相关事件
     let isDragging = false;
     let startX;
@@ -84,9 +91,6 @@ function createDivider(position, content) {
         }
     });
     
-    // 添加颜色变量
-    divider.style.setProperty('--divider-color', '#ff4444'); // 默认红色
-    
     document.getElementById('timeBar').appendChild(divider);
     return divider;
 }
@@ -105,6 +109,14 @@ function updatePreview(text) {
 function saveNote() {
     const content = document.getElementById('markdownInput').value;
     currentNote.dataset.content = content;
+    
+    // 更新线条颜色
+    if (content && content.trim() !== '') {
+        currentNote.style.setProperty('--divider-color', '#2196F3'); // 蓝色
+    } else {
+        currentNote.style.setProperty('--divider-color', '#ff4444'); // 红色
+    }
+    
     document.getElementById('editModal').style.display = 'none';
     saveToLocalStorage();
     updatePreview(content);
