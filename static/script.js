@@ -10,6 +10,7 @@ window.onload = () => {
             createDivider(item.position, item.content);
         });
     }
+    updateStats();
 };
 
 document.getElementById('timeBar').addEventListener('click', (e) => {
@@ -28,6 +29,7 @@ document.getElementById('timeBar').addEventListener('click', (e) => {
     
     // 保存到本地存储
     saveToLocalStorage();
+    updateStats();
 });
 
 function createDivider(position, content) {
@@ -164,6 +166,7 @@ function saveToLocalStorage() {
         content: divider.dataset.content
     }));
     localStorage.setItem('timeBarData', JSON.stringify(items));
+    updateStats();
 }
 
 // 关闭弹窗
@@ -197,6 +200,7 @@ function showDeleteConfirmation(divider) {
         divider.remove();
         saveToLocalStorage();
         modal.remove();
+        updateStats();
     });
     
     // 取消删除
@@ -288,7 +292,7 @@ clearButton.id = 'clearButton';
 clearButton.textContent = '清空所有';
 document.body.appendChild(clearButton);
 
-// 添加按钮样式
+// 修改按钮样式
 const style = document.createElement('style');
 style.textContent = `
     #saveButton {
@@ -305,6 +309,21 @@ style.textContent = `
     }
     #saveButton:hover {
         background-color: #45a049;
+    }
+    #saveToServerButton {
+        position: fixed;
+        bottom: 70px;  // 修改为在保存到本地按钮上方
+        right: 20px;
+        padding: 10px 20px;
+        background-color: #2196F3;  // 使用蓝色区分
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+    #saveToServerButton:hover {
+        background-color: #1976D2;
     }
     #clearButton {
         position: fixed;
@@ -359,6 +378,34 @@ style.textContent = `
     .divider:hover .summary-display {
         display: block;
     }
+
+    #statsBox {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        font-family: Arial, sans-serif;
+        z-index: 1000;
+    }
+    
+    #statsBox h3 {
+        margin: 0 0 10px 0;
+        color: #333;
+    }
+    
+    #statsBox ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    
+    #statsBox li {
+        margin: 5px 0;
+        color: #666;
+    }
 `;
 document.head.appendChild(style);
 
@@ -374,11 +421,13 @@ function createTimeTicks() {
     const timeTicks = document.querySelector('.time-ticks');
     timeTicks.innerHTML = '';
     
-    // 创建24小时的刻度
-    for (let i = 0; i <= 24; i++) {
+    // 创建从2:00到2:00的刻度（26小时）
+    for (let i = 2; i <= 28; i++) {
         const tick = document.createElement('div');
         tick.className = 'time-tick';
-        tick.setAttribute('data-time', `${i}:00`);
+        const hour = i % 24;
+        const day = i >= 24 ? '' : '';
+        tick.setAttribute('data-time', `${day}${hour}:00`);
         timeTicks.appendChild(tick);
     }
 }
@@ -400,15 +449,21 @@ function updateTimeBar() {
 }
 
 function getDateFromPosition(position) {
-    // 将百分比位置转换为24小时制的时间
-    const hours = Math.floor((position / 100) * 24);
-    const minutes = Math.floor(((position / 100) * 24 - hours) * 60);
+    // 将百分比位置转换为24小时制的时间（从2:00开始）
+    const totalHours = (position / 100) * 26;  // 26小时范围
+    const adjustedHours = totalHours + 2;  // 从2:00开始
+    const hours = Math.floor(adjustedHours);
+    const minutes = Math.floor((adjustedHours - hours) * 60);
+    
+    // 处理跨天的情况
+    const displayHours = hours % 24;
+    const dayPrefix = hours >= 24 ? '' : '';
     
     // 格式化时间为 HH:MM 格式
-    const formattedHours = hours.toString().padStart(2, '0');
+    const formattedHours = displayHours.toString().padStart(2, '0');
     const formattedMinutes = minutes.toString().padStart(2, '0');
     
-    return `${formattedHours}:${formattedMinutes}`;
+    return `${dayPrefix}${formattedHours}:${formattedMinutes}`;
 }
 
 // 添加获取摘要的函数
@@ -446,4 +501,43 @@ function getTimeDifference(currentPosition) {
         }
     }
     return '';
+}
+
+// 添加统计方框
+const statsBox = document.createElement('div');
+statsBox.id = 'statsBox';
+document.body.appendChild(statsBox);
+
+// 更新统计信息
+function updateStats() {
+    const dividers = [...document.querySelectorAll('.divider')];
+    dividers.sort((a, b) => parseFloat(a.style.left) - parseFloat(b.style.left));
+    
+    const stats = {};
+    
+    for (let i = 1; i < dividers.length; i++) {
+        const prevDivider = dividers[i - 1];
+        const currentDivider = dividers[i];
+        const content = prevDivider.dataset.content || '未命名';
+        
+        const prevPosition = parseFloat(prevDivider.style.left);
+        const currentPosition = parseFloat(currentDivider.style.left);
+        const diffHours = (currentPosition - prevPosition) / 100 * 26;
+        
+        if (!stats[content]) {
+            stats[content] = 0;
+        }
+        stats[content] += diffHours;
+    }
+    
+    let statsHTML = '<h3>时间统计</h3><ul>';
+    for (const [content, hours] of Object.entries(stats)) {
+        const totalHours = Math.floor(hours);
+        const minutes = Math.round((hours - totalHours) * 60);
+        const displayContent = content.trim() || '未命名';
+        statsHTML += `<li>${displayContent}: ${totalHours}小时${minutes}分钟</li>`;
+    }
+    statsHTML += '</ul>';
+    
+    statsBox.innerHTML = statsHTML;
 }

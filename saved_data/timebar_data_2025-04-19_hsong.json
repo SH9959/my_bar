@@ -1,42 +1,38 @@
 [
   {
-    "position": 55.735,
+    "position": 80.5683,
     "content": "上课+吃饭+poop\n"
   },
   {
-    "position": 11.8181,
+    "position": 36.4848,
     "content": "苏醒！\n"
   },
   {
-    "position": 25.3182,
+    "position": 63.4015,
     "content": "debug\n\npiece的代码又报错，重新不覆盖地跑了一遍。没什么问题了就不管了。应该是都跑好了video。可恶竟然用了一天吗。"
   },
   {
-    "position": 16.9015,
+    "position": 49.7348,
     "content": "视频\n\n生成了video，但是遇到bug。本以为10min可以完成，最后却用了两个小时。这还没完、、、"
   },
   {
-    "position": 13.9848,
+    "position": 39.9015,
     "content": "工位\n到工位！\n"
   },
   {
-    "position": 78.7349,
+    "position": 1.90151,
+    "content": "归\n\n\n\n\n回到宿舍"
+  },
+  {
+    "position": 6.90152,
+    "content": "开睡"
+  },
+  {
+    "position": 99.4849,
     "content": "修改prompt:\n\n修改了3h的prompt,加上了few-shots。\n但是for_video/for_states还没写.\n😭\n\n"
   },
   {
-    "position": 61.1515,
+    "position": 85.9015,
     "content": "调整“神秘的条”"
-  },
-  {
-    "position": 36.447,
-    "content": "吃饭+午休\n"
-  },
-  {
-    "position": 40.0303,
-    "content": "debug\n"
-  },
-  {
-    "position": 81.1136,
-    "content": "归"
   }
 ]

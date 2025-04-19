@@ -38,7 +38,8 @@ def save_data():
             
         data = request_data.get('data', [])
         timestamp = datetime.now().strftime("%Y%m%d")
-        filename = f"timebar_data_{timestamp}.json"
+        client_ip = request.remote_addr  # 获取客户端IP
+        filename = f"timebar_data_remote_{client_ip}_{timestamp}.json"
         filepath = os.path.join(DATA_DIR, filename)
         
         with open(filepath, 'w', encoding='utf-8') as f:
