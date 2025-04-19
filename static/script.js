@@ -163,3 +163,57 @@ function showDeleteConfirmation(divider) {
         }
     });
 }
+
+// 添加保存按钮到页面
+const saveButton = document.createElement('button');
+saveButton.id = 'saveButton';
+saveButton.textContent = '保存数据';
+document.body.appendChild(saveButton);
+
+// 添加保存按钮样式
+const style = document.createElement('style');
+style.textContent = `
+    #saveButton {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    #saveButton:hover {
+        background-color: #45a049;
+    }
+`;
+document.head.appendChild(style);
+
+// 保存数据到服务器
+saveButton.addEventListener('click', async () => {
+    const dividers = [...document.querySelectorAll('.divider')];
+    const data = dividers.map(divider => ({
+        position: parseFloat(divider.style.left),
+        content: divider.dataset.content
+    }));
+
+    try {
+        const response = await fetch('/save_data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        if (result.status === 'success') {
+            alert(`数据已保存到: ${result.filepath}`);
+        } else {
+            alert('保存失败');
+        }
+    } catch (error) {
+        alert('保存失败: ' + error.message);
+    }
+});
