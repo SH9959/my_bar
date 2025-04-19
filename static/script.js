@@ -267,3 +267,44 @@ clearButton.addEventListener('click', () => {
     saveToLocalStorage();
     alert('已清空所有内容');
 });
+
+function createTimeTicks() {
+    const timeTicks = document.querySelector('.time-ticks');
+    timeTicks.innerHTML = '';
+    
+    // 创建24小时的刻度
+    for (let i = 0; i <= 24; i++) {
+        const tick = document.createElement('div');
+        tick.className = 'time-tick';
+        tick.setAttribute('data-time', `${i}:00`);
+        timeTicks.appendChild(tick);
+    }
+}
+
+// 在页面加载时调用
+document.addEventListener('DOMContentLoaded', createTimeTicks);
+
+function updateTextareaPlaceholder() {
+    const timeBar = document.getElementById('timeBar');
+    const currentPosition = timeBar.style.width;
+    const currentDate = getDateFromPosition(currentPosition); // 假设您有一个函数可以根据位置获取日期
+    document.getElementById('markdownInput').placeholder = `输入Markdown笔记...\n当前刻度: ${currentDate}`;
+}
+
+// 在时间条更新时调用此函数
+function updateTimeBar() {
+    // ... 现有的时间条更新代码 ...
+    updateTextareaPlaceholder();
+}
+
+function getDateFromPosition(position) {
+    // 将百分比位置转换为24小时制的时间
+    const hours = Math.floor((position / 100) * 24);
+    const minutes = Math.floor(((position / 100) * 24 - hours) * 60);
+    
+    // 格式化时间为 HH:MM 格式
+    const formattedHours = hours.toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    
+    return `${formattedHours}:${formattedMinutes}`;
+}

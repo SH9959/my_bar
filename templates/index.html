@@ -8,14 +8,17 @@
 </head>
 <body>
     <h1>神秘的条</h1>
-    <div class="time-bar" id="timeBar"></div>
+    <div class="time-bar">
+        <div class="time-ticks"></div>
+        <div class="time-bar" id="timeBar"></div>
+    </div>
     
     <!-- 编辑弹窗 -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <div class="editor">
-                <textarea id="markdownInput" placeholder="输入Markdown笔记...&#10;日期: {{ current_date }}"></textarea>
+                <textarea id="markdownInput" placeholder="输入Markdown笔记...&#10;当前刻度: "></textarea>
                 <!-- <div class="date-hint">当前日期: {{ current_date }}</div> -->
                 <div id="preview"></div>
             </div>
