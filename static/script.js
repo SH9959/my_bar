@@ -33,7 +33,19 @@ function createDivider(position, content) {
     const divider = document.createElement('div');
     divider.className = 'divider';
     divider.style.left = `${position}%`;
-    divider.dataset.content = content || ''; // 确保内容不为 undefined
+    divider.dataset.content = content || '';
+    
+    // 添加时间显示
+    const timeDisplay = document.createElement('div');
+    timeDisplay.className = 'time-display';
+    timeDisplay.textContent = getDateFromPosition(position);
+    divider.appendChild(timeDisplay);
+    
+    // 添加摘要显示
+    const summaryDisplay = document.createElement('div');
+    summaryDisplay.className = 'summary-display';
+    summaryDisplay.textContent = getSummary(content);
+    divider.appendChild(summaryDisplay);
     
     // 根据内容设置颜色
     if (content && content.trim() !== '新事项' && content.trim() !== '') {
@@ -72,6 +84,8 @@ function createDivider(position, content) {
         // 限制在时间条范围内
         if (newPosition >= 0 && newPosition <= 100) {
             divider.style.left = `${newPosition}%`;
+            // 更新时间显示
+            divider.querySelector('.time-display').textContent = getDateFromPosition(newPosition);
         }
     });
 
@@ -99,12 +113,19 @@ function showEditor(content) {
     const modal = document.getElementById('editModal');
     const markdownInput = document.getElementById('markdownInput');
     
+    // 获取当前分隔线的时间差
+    const timeDiff = getTimeDifference(parseFloat(currentNote.style.left));
+    
     // 如果内容不是"新事项"，则显示保存的内容
     if (content && content.trim() !== '新事项') {
         markdownInput.value = content;
     } else {
         markdownInput.value = '';
     }
+    
+    // 更新时间差显示
+    const timeDiffText = timeDiff ? `\n\n距离左侧时间点: ${timeDiff}` : '';
+    markdownInput.placeholder = `输入Markdown笔记...${timeDiffText}`;
     
     updatePreview(markdownInput.value);
     modal.style.display = 'block';
@@ -123,6 +144,12 @@ function saveNote() {
         currentNote.style.setProperty('--divider-color', '#2196F3'); // 蓝色
     } else {
         currentNote.style.setProperty('--divider-color', '#ff4444'); // 红色
+    }
+    
+    // 更新摘要显示
+    const summaryDisplay = currentNote.querySelector('.summary-display');
+    if (summaryDisplay) {
+        summaryDisplay.textContent = getSummary(content);
     }
     
     document.getElementById('editModal').style.display = 'none';
@@ -229,6 +256,44 @@ style.textContent = `
     #clearButton:hover {
         background-color: #d32f2f;
     }
+    
+    .time-display {
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+    
+    .divider:hover .time-display {
+        display: block;
+    }
+    
+    .summary-display {
+        position: absolute;
+        top: 50%;
+        right: 100%;  // 改为右侧，这样会显示在分隔线左侧
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 12px;
+        white-space: nowrap;
+        max-width: 80px;  // 减小最大宽度
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-right: 5px;  // 添加一些间距
+    }
+    
+    .divider:hover .summary-display {
+        display: block;
+    }
 `;
 document.head.appendChild(style);
 
@@ -307,4 +372,41 @@ function getDateFromPosition(position) {
     const formattedMinutes = minutes.toString().padStart(2, '0');
     
     return `${formattedHours}:${formattedMinutes}`;
+}
+
+// 添加获取摘要的函数
+function getSummary(content) {
+    if (!content) return '';
+    
+    // 移除 Markdown 标记
+    const plainText = content.replace(/[#*`_~]/g, '');
+    
+    // 只获取前两个字
+    return plainText.substring(0, 5);
+}
+
+// 修改getTimeDifference函数，使其更精确
+function getTimeDifference(currentPosition) {
+    const dividers = [...document.querySelectorAll('.divider')];
+    
+    // 按位置排序所有分隔线
+    dividers.sort((a, b) => parseFloat(a.style.left) - parseFloat(b.style.left));
+    
+    // 找到当前分隔线的索引
+    const currentIndex = dividers.findIndex(d => parseFloat(d.style.left) === currentPosition);
+    
+    if (currentIndex > 0) {
+        // 获取左侧相邻分隔线的位置
+        const prevPosition = parseFloat(dividers[currentIndex - 1].style.left);
+        const diffHours = (currentPosition - prevPosition) / 100 * 24;
+        const hours = Math.floor(diffHours);
+        const minutes = Math.round((diffHours - hours) * 60);
+        
+        if (hours > 0) {
+            return `${hours}小时${minutes}分钟`;
+        } else {
+            return `${minutes}分钟`;
+        }
+    }
+    return '';
 }

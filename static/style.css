@@ -6,6 +6,12 @@ body {
     padding: 20px;
 }
 
+.time-bar-container {
+    position: relative;
+    width: 100%;
+    margin: 20px 0;
+}
+
 .time-bar {
     position: relative;
     width: 100%;
