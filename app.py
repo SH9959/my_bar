@@ -16,6 +16,14 @@ import socket
 
 app = Flask(__name__)
 
+# 设置数据存储目录
+DATA_DIR = "saved_data"
+if not os.path.exists(DATA_DIR):
+    os.makedirs(DATA_DIR)
+
+# 设置服务器密码
+SERVER_PASSWORD = '123456'  # 修改为你想要的密码
+
 @app.route('/')
 def index():
     current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -23,26 +31,25 @@ def index():
 
 @app.route('/save_data', methods=['POST'])
 def save_data():
-    data = request.json
-    timestamp = datetime.now().strftime("%Y%m%d")
-    filename = f"timebar_data_{timestamp}.json"
-    
-    # 确保保存目录存在
-    save_dir = "saved_data"
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir)
-    
-    # 保存数据
-    filepath = os.path.join(save_dir, filename)
-    absolute_path = os.path.abspath(filepath)  # 获取绝对路径
-    
-    with open(filepath, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-    
-    return jsonify({
-        'status': 'success',
-        'filepath': absolute_path  # 返回绝对路径
-    })
+    try:
+        request_data = request.json
+        if request_data.get('password') != SERVER_PASSWORD:
+            return jsonify({'status': 'error', 'error': '密码错误'}), 401
+            
+        data = request_data.get('data', [])
+        timestamp = datetime.now().strftime("%Y%m%d")
+        filename = f"timebar_data_{timestamp}.json"
+        filepath = os.path.join(DATA_DIR, filename)
+        
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        
+        return jsonify({
+            'status': 'success',
+            'filepath': filepath
+        })
+    except Exception as e:
+        return jsonify({'status': 'error', 'error': str(e)}), 500
 
 if __name__ == '__main__':
     # 获取本机IP地址

@@ -3,6 +3,7 @@ let currentNote = null;
 
 // 初始化加载保存的数据
 window.onload = () => {
+    // 首先尝试从本地存储加载
     const savedData = localStorage.getItem('timeBarData');
     if (savedData) {
         JSON.parse(savedData).forEach(item => {
@@ -211,11 +212,75 @@ function showDeleteConfirmation(divider) {
     });
 }
 
-// 添加保存按钮到页面
+// 修改保存按钮的创建和事件处理
 const saveButton = document.createElement('button');
 saveButton.id = 'saveButton';
-saveButton.textContent = '保存数据';
+saveButton.textContent = '保存到本地';
 document.body.appendChild(saveButton);
+
+const saveToServerButton = document.createElement('button');
+saveToServerButton.id = 'saveToServerButton';
+saveToServerButton.textContent = '保存到服务器';
+document.body.appendChild(saveToServerButton);
+
+// 保存到本地
+saveButton.addEventListener('click', () => {
+    const dividers = [...document.querySelectorAll('.divider')];
+    const data = dividers.map(divider => ({
+        position: parseFloat(divider.style.left),
+        content: divider.dataset.content
+    }));
+    
+    // 保存到本地存储
+    localStorage.setItem('timeBarData', JSON.stringify(data));
+    
+    // 下载数据文件
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `timebar_data_${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    alert('数据已保存到本地');
+});
+
+// 保存到服务器
+saveToServerButton.addEventListener('click', async () => {
+    const password = prompt('请输入服务器密码：');
+    if (!password) return;
+    
+    const dividers = [...document.querySelectorAll('.divider')];
+    const data = dividers.map(divider => ({
+        position: parseFloat(divider.style.left),
+        content: divider.dataset.content
+    }));
+
+    try {
+        const response = await fetch('/save_data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                data: data,
+                password: password
+            })
+        });
+
+        const result = await response.json();
+        if (result.status === 'success') {
+            alert(`数据已保存到服务器: ${result.filepath}`);
+        } else {
+            alert('保存失败: ' + result.error);
+        }
+    } catch (error) {
+        alert('保存失败: ' + error.message);
+    }
+});
 
 // 添加清空按钮到页面
 const clearButton = document.createElement('button');
@@ -296,34 +361,6 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
-
-// 保存数据到服务器
-saveButton.addEventListener('click', async () => {
-    const dividers = [...document.querySelectorAll('.divider')];
-    const data = dividers.map(divider => ({
-        position: parseFloat(divider.style.left),
-        content: divider.dataset.content
-    }));
-
-    try {
-        const response = await fetch('/save_data', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        });
-
-        const result = await response.json();
-        if (result.status === 'success') {
-            alert(`数据已保存到: ${result.filepath}`);
-        } else {
-            alert('保存失败');
-        }
-    } catch (error) {
-        alert('保存失败: ' + error.message);
-    }
-});
 
 // 清空所有内容
 clearButton.addEventListener('click', () => {
