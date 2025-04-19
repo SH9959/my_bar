@@ -12,6 +12,7 @@ from flask import Flask, render_template, request, jsonify, send_file
 import json
 import os
 from datetime import datetime
+import socket
 
 app = Flask(__name__)
 
@@ -44,4 +45,9 @@ def save_data():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # 获取本机IP地址
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
+    
+    print(f"服务器运行在: http://{local_ip}:5000")
+    app.run(host='0.0.0.0', port=5000, debug=True)
