@@ -20,7 +20,9 @@ body {
     width: 2px;
     height: 100%;
     background: var(--divider-color);
-    cursor: pointer;
+    cursor: ew-resize;
+    user-select: none;
+    touch-action: none;
 }
 
 .divider[data-type="temporary"] {

@@ -35,10 +35,47 @@ function createDivider(position, content) {
     divider.style.left = `${position}%`;
     divider.dataset.content = content;
     
-    divider.addEventListener('click', (e) => {
+    // 添加拖动相关事件
+    let isDragging = false;
+    let startX;
+    let startLeft;
+
+    divider.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return; // 只响应左键
+        isDragging = true;
+        startX = e.clientX;
+        startLeft = parseFloat(divider.style.left);
         e.stopPropagation();
-        currentNote = divider;
-        showEditor(content);
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        
+        const timeBar = document.getElementById('timeBar');
+        const rect = timeBar.getBoundingClientRect();
+        const deltaX = e.clientX - startX;
+        const newPosition = startLeft + (deltaX / rect.width) * 100;
+        
+        // 限制在时间条范围内
+        if (newPosition >= 0 && newPosition <= 100) {
+            divider.style.left = `${newPosition}%`;
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            saveToLocalStorage(); // 拖动结束后保存位置
+        }
+    });
+
+    // 点击事件
+    divider.addEventListener('click', (e) => {
+        if (!isDragging) { // 只有在非拖动状态下才触发点击事件
+            e.stopPropagation();
+            currentNote = divider;
+            showEditor(content);
+        }
     });
     
     // 添加颜色变量
