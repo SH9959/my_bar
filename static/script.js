@@ -41,7 +41,13 @@ function createDivider(position, content) {
     let startLeft;
 
     divider.addEventListener('mousedown', (e) => {
-        if (e.button !== 0) return; // 只响应左键
+        if (e.button === 2) { // 右键点击
+            e.preventDefault(); // 阻止默认右键菜单
+            e.stopPropagation();
+            showDeleteConfirmation(divider);
+            return;
+        }
+        if (e.button !== 0) return; // 只响应左键拖动
         isDragging = true;
         startX = e.clientX;
         startLeft = parseFloat(divider.style.left);
@@ -121,3 +127,39 @@ document.querySelector('.close').addEventListener('click', () => {
 document.getElementById('markdownInput').addEventListener('input', (e) => {
     updatePreview(e.target.value);
 });
+
+// 添加删除确认弹窗
+function showDeleteConfirmation(divider) {
+    const modal = document.createElement('div');
+    modal.className = 'delete-modal';
+    modal.innerHTML = `
+        <div class="delete-modal-content">
+            <p>确定要删除这个分隔线吗？</p>
+            <div class="delete-buttons">
+                <button class="confirm-delete">确定</button>
+                <button class="cancel-delete">取消</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // 确认删除
+    modal.querySelector('.confirm-delete').addEventListener('click', () => {
+        divider.remove();
+        saveToLocalStorage();
+        modal.remove();
+    });
+    
+    // 取消删除
+    modal.querySelector('.cancel-delete').addEventListener('click', () => {
+        modal.remove();
+    });
+    
+    // 点击模态框外部关闭
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+}
