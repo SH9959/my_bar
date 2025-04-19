@@ -33,7 +33,7 @@ function createDivider(position, content) {
     const divider = document.createElement('div');
     divider.className = 'divider';
     divider.style.left = `${position}%`;
-    divider.dataset.content = content;
+    divider.dataset.content = content || ''; // 确保内容不为 undefined
     
     // 根据内容设置颜色
     if (content && content.trim() !== '新事项' && content.trim() !== '') {
@@ -49,7 +49,7 @@ function createDivider(position, content) {
 
     divider.addEventListener('mousedown', (e) => {
         if (e.button === 2) { // 右键点击
-            e.preventDefault(); // 阻止默认右键菜单
+            e.preventDefault();
             e.stopPropagation();
             showDeleteConfirmation(divider);
             return;
@@ -87,7 +87,7 @@ function createDivider(position, content) {
         if (!isDragging) { // 只有在非拖动状态下才触发点击事件
             e.stopPropagation();
             currentNote = divider;
-            showEditor(content);
+            showEditor(divider.dataset.content); // 直接使用保存的内容
         }
     });
     
@@ -97,8 +97,16 @@ function createDivider(position, content) {
 
 function showEditor(content) {
     const modal = document.getElementById('editModal');
-    document.getElementById('markdownInput').value = content;
-    updatePreview(content);
+    const markdownInput = document.getElementById('markdownInput');
+    
+    // 如果内容不是"新事项"，则显示保存的内容
+    if (content && content.trim() !== '新事项') {
+        markdownInput.value = content;
+    } else {
+        markdownInput.value = '';
+    }
+    
+    updatePreview(markdownInput.value);
     modal.style.display = 'block';
 }
 
@@ -182,7 +190,13 @@ saveButton.id = 'saveButton';
 saveButton.textContent = '保存数据';
 document.body.appendChild(saveButton);
 
-// 添加保存按钮样式
+// 添加清空按钮到页面
+const clearButton = document.createElement('button');
+clearButton.id = 'clearButton';
+clearButton.textContent = '清空所有';
+document.body.appendChild(clearButton);
+
+// 添加按钮样式
 const style = document.createElement('style');
 style.textContent = `
     #saveButton {
@@ -195,9 +209,25 @@ style.textContent = `
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        z-index: 1000;
     }
     #saveButton:hover {
         background-color: #45a049;
+    }
+    #clearButton {
+        position: fixed;
+        bottom: 20px;
+        right: 120px;
+        padding: 10px 20px;
+        background-color: #f44336;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+    #clearButton:hover {
+        background-color: #d32f2f;
     }
 `;
 document.head.appendChild(style);
@@ -228,4 +258,12 @@ saveButton.addEventListener('click', async () => {
     } catch (error) {
         alert('保存失败: ' + error.message);
     }
+});
+
+// 清空所有内容
+clearButton.addEventListener('click', () => {
+    const dividers = document.querySelectorAll('.divider');
+    dividers.forEach(divider => divider.remove());
+    saveToLocalStorage();
+    alert('已清空所有内容');
 });

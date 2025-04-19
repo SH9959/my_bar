@@ -111,3 +111,26 @@ textarea {
     background-color: #ccc;
     border: none;
 }
+
+#clearButton {
+    position: fixed;
+    bottom: 20px;
+    right: 120px;
+    padding: 10px 20px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+#clearButton:hover {
+    background-color: #d32f2f;
+}
+
+.date-hint {
+    color: #666;
+    font-size: 0.9em;
+    margin-top: 5px;
+}

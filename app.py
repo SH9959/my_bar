@@ -17,12 +17,13 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return render_template('index.html', current_date=current_date)
 
 @app.route('/save_data', methods=['POST'])
 def save_data():
     data = request.json
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now().strftime("%Y%m%d")
     filename = f"timebar_data_{timestamp}.json"
     
     # 确保保存目录存在
