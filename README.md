@@ -1,3 +1,3 @@
 # 😙👉👈
 
-![alt text](images/demo.png)
+![demo](images/demo.png)
