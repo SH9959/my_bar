@@ -11,6 +11,7 @@ window.onload = () => {
         });
     }
     updateStats();
+    createCurrentTimePointer();
 };
 
 document.getElementById('timeBar').addEventListener('click', (e) => {
@@ -406,6 +407,26 @@ style.textContent = `
         margin: 5px 0;
         color: #666;
     }
+
+    .time-pointer {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 2px;
+        background-color: #ff0000;
+        z-index: 10;
+    }
+    
+    .time-pointer::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -4px;
+        width: 10px;
+        height: 10px;
+        background-color: #ff0000;
+        border-radius: 50%;
+    }
 `;
 document.head.appendChild(style);
 
@@ -514,7 +535,7 @@ function updateStats() {
     dividers.sort((a, b) => parseFloat(a.style.left) - parseFloat(b.style.left));
     
     const stats = {
-        '工作学习': 0,
+        '工习': 0,
         '阅读': 0,
         '摸鱼': 0,
         '运动': 0,
@@ -575,7 +596,7 @@ function categorizeContent(content) {
         contentLower.includes('写报告') || 
         contentLower.includes('写论文') || 
         contentLower.includes('写邮件')) {
-        return '工作学习';  // 修改为 '工作学习'
+        return '工习';  // 修改为 ''
     } else if (contentLower.includes('阅读') || contentLower.includes('看书')) {
         return '阅读';
     } else if (contentLower.includes('摸鱼') || 
@@ -604,5 +625,40 @@ function categorizeContent(content) {
         return '休息';
     } else {
         return '其他';
+    }
+}
+
+// 添加当前时间指针
+function createCurrentTimePointer() {
+    const pointer = document.createElement('div');
+    pointer.id = 'currentTimePointer';
+    pointer.className = 'time-pointer';
+    document.getElementById('timeBar').appendChild(pointer);
+    
+    // 初始更新指针位置
+    updateCurrentTimePointer();
+    
+    // 每分钟更新一次指针位置
+    setInterval(updateCurrentTimePointer, 60000);
+}
+
+function updateCurrentTimePointer() {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    
+    // 计算当前时间在26小时范围内的位置（从2:00开始）
+    let totalHours = hours + minutes / 60;
+    if (totalHours < 2) {
+        totalHours += 24; // 处理凌晨时间
+    }
+    totalHours -= 2; // 从2:00开始
+    
+    // 计算百分比位置
+    const position = (totalHours / 26) * 100;
+    
+    const pointer = document.getElementById('currentTimePointer');
+    if (pointer) {
+        pointer.style.left = `${position}%`;
     }
 }
