@@ -513,31 +513,96 @@ function updateStats() {
     const dividers = [...document.querySelectorAll('.divider')];
     dividers.sort((a, b) => parseFloat(a.style.left) - parseFloat(b.style.left));
     
-    const stats = {};
+    const stats = {
+        '工作学习': 0,
+        '阅读': 0,
+        '摸鱼': 0,
+        '运动': 0,
+        '睡眠': 0,
+        '通勤': 0,
+        '休息': 0,
+        '其他': 0
+    };
     
-    for (let i = 1; i < dividers.length; i++) {
-        const prevDivider = dividers[i - 1];
+    for (let i = 0; i < dividers.length; i++) {
         const currentDivider = dividers[i];
-        const content = prevDivider.dataset.content || '未命名';
+        const content = currentDivider.dataset.content || '未命名';
         
-        const prevPosition = parseFloat(prevDivider.style.left);
+        // 计算当前分隔线到左侧分隔线或起始点的时间
         const currentPosition = parseFloat(currentDivider.style.left);
+        let prevPosition;
+        
+        if (i === 0) {
+            prevPosition = 0;
+        } else {
+            prevPosition = parseFloat(dividers[i - 1].style.left);
+        }
+        
         const diffHours = (currentPosition - prevPosition) / 100 * 26;
         
-        if (!stats[content]) {
-            stats[content] = 0;
-        }
-        stats[content] += diffHours;
+        // 根据内容分类
+        const category = categorizeContent(content);
+        stats[category] += diffHours;
     }
     
     let statsHTML = '<h3>时间统计</h3><ul>';
-    for (const [content, hours] of Object.entries(stats)) {
-        const totalHours = Math.floor(hours);
-        const minutes = Math.round((hours - totalHours) * 60);
-        const displayContent = content.trim() || '未命名';
-        statsHTML += `<li>${displayContent}: ${totalHours}小时${minutes}分钟</li>`;
+    for (const [category, hours] of Object.entries(stats)) {
+        if (hours > 0) {  // 只显示有时间的类别
+            const totalHours = Math.floor(hours);
+            const minutes = Math.round((hours - totalHours) * 60);
+            statsHTML += `<li>${category}: ${totalHours}小时${minutes}分钟</li>`;
+        }
     }
     statsHTML += '</ul>';
     
     statsBox.innerHTML = statsHTML;
+}
+
+// 根据内容分类
+function categorizeContent(content) {
+    const contentLower = content.toLowerCase();
+    
+    if (contentLower.includes('学习') || 
+        contentLower.includes('上课') || 
+        contentLower.includes('作业') || 
+        contentLower.includes('开会') || 
+        contentLower.includes('工作') || 
+        contentLower.includes('写代码') || 
+        contentLower.includes('实验') || 
+        contentLower.includes('调参') || 
+        contentLower.includes('debug') || 
+        contentLower.includes('写文档') || 
+        contentLower.includes('写报告') || 
+        contentLower.includes('写论文') || 
+        contentLower.includes('写邮件')) {
+        return '工作学习';  // 修改为 '工作学习'
+    } else if (contentLower.includes('阅读') || contentLower.includes('看书')) {
+        return '阅读';
+    } else if (contentLower.includes('摸鱼') || 
+               contentLower.includes('游戏') || 
+               contentLower.includes('娱乐') || 
+               contentLower.includes('走神') || 
+               contentLower.includes('发呆') || 
+               contentLower.includes('神秘的条') || 
+               contentLower.includes('开发')) {
+        return '摸鱼';
+    } else if (contentLower.includes('运动') || 
+               contentLower.includes('健身') || 
+               contentLower.includes('跑步')) {
+        return '运动';
+    } else if (contentLower.includes('睡眠') || 
+               contentLower.includes('睡觉')) {
+        return '睡眠';
+    } else if (contentLower.includes('通勤') || 
+               contentLower.includes('交通')) {
+        return '通勤';
+    } else if (contentLower.includes('休息') || 
+               contentLower.includes('午休') || 
+               contentLower.includes('吃饭') || 
+               contentLower.includes('午睡') || 
+               contentLower.includes('洗漱')) {
+        return '休息';
+    } else {
+        return '其他';
+    }
 }
