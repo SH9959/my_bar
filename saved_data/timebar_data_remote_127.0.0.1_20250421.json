@@ -1,0 +1,46 @@
+[
+  {
+    "position": 27,
+    "content": "苏醒！\n\n睡眠"
+  },
+  {
+    "position": 2.83334,
+    "content": "开始睡觉\n\n通勤"
+  },
+  {
+    "position": 28.9166,
+    "content": "到工位！\n通勤\n差点迟到\n9：30：41"
+  },
+  {
+    "position": 36.8333,
+    "content": "听讲座\n\n\nVLA对齐\n\n工作"
+  },
+  {
+    "position": 40.3333,
+    "content": "吃饭\n"
+  },
+  {
+    "position": 59.3333,
+    "content": "睡觉\n\n补觉"
+  },
+  {
+    "position": 69.6667,
+    "content": "上课"
+  },
+  {
+    "position": 73.4166,
+    "content": "吃饭"
+  },
+  {
+    "position": 77.0834,
+    "content": "讨论代码\n\n工作"
+  },
+  {
+    "position": 83.4999,
+    "content": "工作\n\n删除了一些文件，遇到权限问题。\n跑了新question的生成，for video\n\n也就是说，明天可以跑所有question的生成+run所有模型\n\n还差统计分析代码文件没写了。或许可以给别人写。\n\n得开始写论文了。晚上再写分析代码"
+  },
+  {
+    "position": 75,
+    "content": "通勤\n\n从正门小巴士到科创可真远啊。跋山涉水"
+  }
+]

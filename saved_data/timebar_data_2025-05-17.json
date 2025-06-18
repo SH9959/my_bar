@@ -1,0 +1,38 @@
+[
+  {
+    "position": 17,
+    "content": "回宿舍"
+  },
+  {
+    "position": 13.5,
+    "content": "标数据 工作"
+  },
+  {
+    "position": 39.4167,
+    "content": "睡觉"
+  },
+  {
+    "position": 46.25,
+    "content": "到工位\n吃饭通勤"
+  },
+  {
+    "position": 56.8333,
+    "content": "标数据\n工作\n本以为15:30能标完\n现在突然登不上hpc，导致时间延误15min，中间休息了一小会，16:37才标完数据，延误了1h7min，剩下的23min查看了一下模型，发布了一下任务，17:00了"
+  },
+  {
+    "position": 8.25,
+    "content": "发现grab_fail需要看第一人称，所以花了2h左右修改标注平台\n工作"
+  },
+  {
+    "position": 70.439,
+    "content": "写了一个合并代码\n\n写半天，还是AI帮忙搞定的\n\n为什么pop不出来啊不想了。\n\n工作"
+  },
+  {
+    "position": 92.2848,
+    "content": "出去吃饭啦\n到工位"
+  },
+  {
+    "position": 98.8917,
+    "content": "提交了our model三个\n包括新建文件，验证测试，发现他人能直接sbatch我的文件\n但是用的本地的run.py，不知道换成我的run.py可不可以\n\n工作\n看上去10min的活，干了~2h\n主要是一直切换方式，探索了一段时间，再直接sbatch"
+  }
+]

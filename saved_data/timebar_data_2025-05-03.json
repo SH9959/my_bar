@@ -1,0 +1,26 @@
+[
+  {
+    "position": 43.947,
+    "content": "通勤"
+  },
+  {
+    "position": 36.447,
+    "content": "睡眠结束"
+  },
+  {
+    "position": 9.28031,
+    "content": "到宿舍"
+  },
+  {
+    "position": 48.197,
+    "content": "睡觉"
+  },
+  {
+    "position": 64.8637,
+    "content": "玩耍"
+  },
+  {
+    "position": 78.947,
+    "content": "mediapipe写了一个检测人体姿势的代码，用来筛选不合理的人体扭曲。但是太简单了。\n我需要一些samples来测试\n工作"
+  }
+]

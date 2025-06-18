@@ -1,0 +1,14 @@
+[
+  {
+    "position": 30.8351,
+    "content": "开始"
+  },
+  {
+    "position": 29.088,
+    "content": "到工位"
+  },
+  {
+    "position": 36.4255,
+    "content": "工作\n\n修改了教材编译的問題\n- \\IfWideLayout\n    - 新增cmd解决\n- main.ind:missing $ inserted\n    - main.tex中删除index下划线解决\n- floats lost：figure或table位置的原因，还未解决\n- 还是编译不出目录\n- 为什么昨天151页，今天139页？无从下手的问题。\n\n\n\n"
+  }
+]

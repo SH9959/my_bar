@@ -1,0 +1,38 @@
+[
+  {
+    "position": 26.5682,
+    "content": "睡眠结束\n"
+  },
+  {
+    "position": 15.9848,
+    "content": "开始sleep\n"
+  },
+  {
+    "position": 37.3182,
+    "content": "工作\n看论文，没看完"
+  },
+  {
+    "position": 47.9015,
+    "content": "吃饭，通勤，剪头"
+  },
+  {
+    "position": 61.4015,
+    "content": "睡觉"
+  },
+  {
+    "position": 64.0682,
+    "content": "吃饭+通勤"
+  },
+  {
+    "position": 72.6515,
+    "content": "组会，工作"
+  },
+  {
+    "position": 76.303,
+    "content": "拆分数据集"
+  },
+  {
+    "position": 90.303,
+    "content": "玩耍"
+  }
+]

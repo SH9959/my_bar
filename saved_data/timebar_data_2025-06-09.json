@@ -1,0 +1,14 @@
+[
+  {
+    "position": 29.0833,
+    "content": "到工位"
+  },
+  {
+    "position": 37,
+    "content": "dp算法写出来了，任务拆分和objects拆分，没看懂。直接把结果照抄了吧：\n\n选择的unseen tasks:\n['Drink', 'Write an email', 'Bake a pie', 'Make coffee and read a book', 'Watch a movie and eat food', 'Cook some food', 'Prepare breakfast', 'Water the orchid and open the curtains', 'Prepare a meal and set the table', 'Watch TV and relax on the sofa', 'Organize the bookshelf', 'Browse the internet and watch TV', 'Bake a cake and serve it', 'Relax on sofa', 'Light candles', 'Have a movie marathon with snacks', 'Prepare coffee and watch tv', 'Bake cupcakes and decorate them', 'Take medicine with water', 'Put groceries in the fridge', 'Wash teeth', 'Have breakfast', 'Clean the dishes after dinner', 'Work on the computer and drink coffee', 'Browse the internet', 'Bake bread and make toast', 'Have a picnic in the living room', 'Prepare to wash teeth', 'Charge the cellphone and send a message', 'Organize clothes in the closet', 'Turn off all lights before bed', 'Organize the kitchen cabinets', 'Switch off the lights', 'Listen to music while working', 'Work on the computer', 'Prepare to paint a picture at the desk', 'Teach a language lesson online', 'Set up a movie night with friends']\n\n在unseen tasks和seen tasks中共同出现的objects:\n{'computer', 'tv', 'salmon', 'breadslice', 'waterglass', 'plate', 'chair', 'chicken', 'candle', 'pillow', 'radio', 'sofa', 'paper', 'poundcake', 'kitchencabinet', 'desk', 'fridge', 'mouse', 'faucet', 'kitchentable', 'coffeetable', 'cellphone', 'stove', 'bananas', 'mug', 'keyboard', 'bookshelf', 'chips', 'book', 'lightswitch', 'coffeemaker', 'remotecontrol', 'dishbowl', 'fryingpan'}\n"
+  },
+  {
+    "position": 40.5,
+    "content": "吃饭休息"
+  }
+]

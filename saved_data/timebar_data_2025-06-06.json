@@ -1,0 +1,46 @@
+[
+  {
+    "position": 27.1664,
+    "content": "睡觉结束"
+  },
+  {
+    "position": 28.826,
+    "content": "到工位，通勤"
+  },
+  {
+    "position": 32.9315,
+    "content": "看论文"
+  },
+  {
+    "position": 36.9497,
+    "content": "被疯狂催\n松哥：下午四点开会\n兴哥：论文怎么样了\n帆哥：人形要推进一下\n张老师：人形ppt，论文咋样了"
+  },
+  {
+    "position": 45.8595,
+    "content": "吃饭、休息"
+  },
+  {
+    "position": 53.4591,
+    "content": "做比赛的事情。\n写人形PPT\n工作"
+  },
+  {
+    "position": 57.4773,
+    "content": "开会\nPPT\n工作"
+  },
+  {
+    "position": 72.6765,
+    "content": "吃饭，休息"
+  },
+  {
+    "position": 61.3208,
+    "content": "五点-六点这段时间不知道干啥了。\n摸鱼?"
+  },
+  {
+    "position": 76.5199,
+    "content": "完成了“生成question的时候只选取质量为2的”这一任务。\n\n发现是video路径取错了，但是之前都没错啊，可能是哪一天误删了？\n\n工作"
+  },
+  {
+    "position": 80.5381,
+    "content": "发现了有些数据为空，尽管才几十条，细看是video没有生成。于是重新生成，发现没用。\n\n还是删除吧\n\n工作"
+  }
+]
